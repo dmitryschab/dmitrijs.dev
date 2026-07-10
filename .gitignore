@@ -1,0 +1,4 @@
+# build/source artifacts — not part of the deployed page
+ruvector.db
+*.csv
+Dmitrijs Sabelniks - Portfolio.html
