@@ -1,0 +1,30 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      # Only index.html is the site. Keep the CSVs / ruvector.db / other HTML out of prod.
+      - name: Stage site
+        run: |
+          mkdir -p dist
+          cp index.html dist/
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        if: ${{ env.CF_TOKEN != '' }}          # skips cleanly until the secret is added
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 29998953ea0b0472512f509064785c3f
+          command: pages deploy dist --project-name=dmitrijs-dev --branch=main
