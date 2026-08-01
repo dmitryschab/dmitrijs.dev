@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дмитрий Шабельник — forward deployed инженер</title>
+<meta name="description" content="Дмитрий Шабельник — инженер машинного обучения, forward deployed. Я делаю системы, на которых бизнес реально работает, + ИИ. LLM-пайплайны, кредитный риск, обработка документов.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237A1F22'/%3E%3Cpath d='M16 4 28 16 16 28 4 16Z' fill='%23E0B44A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#521315; font-family:'PT Sans',sans-serif; }
+  a { color:#8C2F22; }
+  a:hover { color:#B8892C; }
+  ::selection { background:#E0B44A; color:#3A1210; }
+  @keyframes shimmer { 0%,100%{box-shadow:0 0 26px rgba(224,180,74,.28)} 50%{box-shadow:0 0 46px rgba(224,180,74,.55)} }
+
+  .page { min-height:100vh; background:#521315;
+    background-image:repeating-conic-gradient(from 45deg at 50% 50%,rgba(224,180,74,.07) 0 25%,transparent 0 50%);
+    background-size:26px 26px; padding:26px 18px 40px; }
+  .frame { max-width:1060px; margin:0 auto; border:2px solid #E0B44A; background:#7A1F22; padding:9px;
+    box-shadow:0 22px 70px rgba(0,0,0,.5); }
+  .sheet { background:#F6ECD4; color:#3A1210; border:1px solid #B8892C; }
+  .strip { height:16px; background:repeating-conic-gradient(from 45deg at 50% 50%,#E0B44A 0 25%,#1E6F6A 0 50%) 0 0/16px 16px; }
+
+  .topbar { background:#1E6F6A; color:#F6ECD4; padding:9px 22px; display:flex; justify-content:space-between;
+    align-items:center; gap:14px; flex-wrap:wrap; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    border-bottom:1px solid #B8892C; }
+  .topbar a { color:#F3D98B; text-decoration:none; }
+  .topbar nav { display:flex; gap:18px; flex-wrap:wrap; }
+  .topbar a.lang { color:#E0B44A; border-bottom:1px solid rgba(224,180,74,.5); }
+
+  .section { padding:38px 44px; background:#F6ECD4; }
+  .hero { padding:44px 44px 38px; background:#F6ECD4; }
+  .hero-row { display:flex; gap:46px; align-items:center; flex-wrap:wrap; }
+  .hero-copy { flex:1; min-width:290px; }
+  /* russian sets longer than the english original — smaller ceiling so the
+     headline stays inside its column instead of running into the lamp */
+  h1 { margin:0; font:700 clamp(30px,4.1vw,50px)/1.06 'Amiri',Georgia,serif; color:#7A1F22;
+       overflow-wrap:break-word; }
+  h1 span { color:#1E6F6A; }
+  .rule { display:flex; align-items:center; gap:12px; margin:20px 0 18px; }
+  .rule i { height:2px; flex:1; max-width:120px; background:linear-gradient(90deg,#E0B44A,rgba(224,180,74,0)); }
+  .rule b { color:#B8892C; font-size:13px; letter-spacing:.5em; font-weight:400; }
+  .lede { margin:0; font:400 16px/1.8 'PT Sans',sans-serif; color:#4A2A20; max-width:560px; }
+
+  /* the portrait in its arch — a turntable clip scrubbed by scroll */
+  .lamp { width:380px; max-width:100%; flex:none; text-align:center; margin:0 auto; }
+  .lamp-outer { padding:10px; background:repeating-conic-gradient(from 45deg at 50% 50%,#E0B44A 0 25%,#7A1F22 0 50%) 0 0/13px 13px;
+    border-radius:190px 190px 10px 10px; animation:shimmer 5s ease-in-out infinite; }
+  .lamp-inner { border:1px solid #B8892C; background:#1E6F6A; padding:6px; border-radius:182px 182px 6px 6px; overflow:hidden; }
+  .lamp-stage { height:520px; border-radius:176px 176px 4px 4px; overflow:hidden; background:#C9C9C7; }
+  /* the turntable is a video scrubbed by scroll — sepia ties the grey studio
+     backdrop into the page's cream-and-gold palette */
+  .lamp-stage video { display:block; width:100%; height:100%; object-fit:cover;
+    filter:sepia(.3) saturate(1.1) contrast(1.02); }
+  .caption { font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:#9A7B4A; margin-top:11px; }
+  .caption small { display:block; margin-top:5px; font-size:10.5px; letter-spacing:.14em; color:#B8892C; }
+
+  .divider { height:14px; background:repeating-conic-gradient(from 45deg at 50% 50%,#B8892C 0 25%,#F6ECD4 0 50%) 0 0/14px 14px;
+    border-top:1px solid #B8892C; border-bottom:1px solid #B8892C; }
+  .part { text-align:center; font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:#1E6F6A; margin-bottom:28px; }
+  .tagline { text-align:center; font:italic 400 16px 'Amiri',Georgia,serif; color:#8A6B44; margin-bottom:26px; }
+  .lede.meta { margin-top:14px; font-size:13.5px; color:#8A6B44; letter-spacing:.04em; }
+
+  .chapter { border:1px solid #C9A96B; background:#FDF7E7; margin-bottom:18px; display:grid; grid-template-columns:96px 1fr; }
+  .chapter-num { color:#F3D98B; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:18px 8px; }
+  .chapter-num em { font:700 34px 'Amiri',serif; font-style:normal; }
+  .chapter-num span { font-size:10px; letter-spacing:.16em; text-align:center; line-height:1.5; }
+  .chapter-body { padding:22px 26px 24px; }
+  .chapter-body h2 { margin:0; font:700 27px/1.2 'Amiri',Georgia,serif; color:#7A1F22; }
+  .chapter-body h2 a { color:#7A1F22; border-bottom:2px solid #E0B44A; text-decoration:none; }
+  .chapter-body p { margin:11px 0 0; font:400 15.5px/1.8 'PT Sans',sans-serif; color:#4A2A20; }
+  .prologue { border-style:dashed; background:#F2E8CE; margin-bottom:0; }
+  .prologue .chapter-num { color:#9A7B4A; border-right:1px dashed #C9A96B; }
+  .prologue .chapter-num em { font-size:30px; }
+  .prologue h2 { font-size:21px; line-height:1.25; color:#8A5F45; }
+  .prologue p { font-size:14.5px; line-height:1.75; color:#6B4A3A; }
+
+  .carpet { background:#7A1F22; padding:36px 44px 40px; border-top:1px solid #B8892C; border-bottom:1px solid #B8892C; }
+  .carpet-weave { padding:9px; background:repeating-conic-gradient(from 45deg at 50% 50%,#E0B44A 0 25%,#521315 0 50%) 0 0/13px 13px; }
+  .carpet-card { background:#F6ECD4; border:1px solid #B8892C; padding:20px 22px 16px; }
+  .hm { display:flex; gap:8px; align-items:flex-start; }
+  .hm-days { display:flex; flex-direction:column; gap:2px; padding-top:17px; flex:none; }
+  .hm-days div { height:12px; font-size:9px; color:#A9895A; display:flex; align-items:center; }
+  .hm-grid { flex:1; min-width:0; }
+  .hm-months { display:flex; gap:2px; margin-bottom:5px; }
+  .hm-weeks { display:flex; gap:2px; }
+  .hm-foot { display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-top:15px; padding-top:11px;
+    border-top:1px solid #E2D3AE; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:#8A6B44; }
+
+  .crafts { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .craft { border:1px solid #C9A96B; background:#FDF7E7; border-radius:70px 70px 4px 4px; overflow:hidden; }
+  .craft h3 { margin:0; color:#F3D98B; padding:16px 10px 12px; text-align:center; font:700 13px 'Amiri',serif; letter-spacing:.1em; }
+  .craft p { margin:0; padding:18px 14px 20px; text-align:center; font:400 14px/2 'PT Sans',sans-serif; color:#4A2A20; }
+
+  /* the deep bottom padding is floor space for the usher — his fingertip sits 8.8%
+     down his own height, so he needs to stand this low for it to meet the links */
+  .contact { background:#1E6F6A; color:#F6ECD4; padding:38px 44px 193px; text-align:center; border-top:1px solid #B8892C;
+    position:relative; overflow:hidden; }
+  .usher { position:absolute; left:76px; bottom:0; height:280px; width:auto; pointer-events:none;
+    opacity:0; transform:translateX(-72%); }
+  .usher.on { opacity:1; transform:translateX(0);
+    transition:transform 1.5s cubic-bezier(.33,.02,.5,1), opacity .5s ease; }
+
+  /* when the point lands, the link he is aiming at lights up */
+  @keyframes liGlow { 0%,100% { text-shadow:none } 45% { text-shadow:0 0 15px rgba(224,180,74,.9) } }
+  .contact-links a.li { position:relative; transition:color .45s ease; }
+  .contact-links a.li::after { content:''; position:absolute; left:0; right:0; bottom:-5px; height:2px;
+    background:#E0B44A; transform:scaleX(0); transform-origin:left; transition:transform .55s ease .1s; }
+  .contact-links a.li.lit { color:#F3D98B; animation:liGlow 1.3s ease-in-out 2; }
+  .contact-links a.li.lit::after { transform:scaleX(1); }
+  .contact .part { color:#9FD6D1; margin-bottom:0; }
+  .contact h2 { font:700 clamp(30px,5vw,42px)/1.1 'Amiri',Georgia,serif; color:#F3D98B; margin:14px 0 6px; }
+  .contact .rule { justify-content:center; margin:20px 0; }
+  .contact .rule i { height:1px; width:70px; max-width:70px; flex:none; background:rgba(243,217,139,.55); }
+  .contact .rule b { color:#E0B44A; letter-spacing:.7em; }
+  .contact-links { display:inline-flex; flex-direction:column; gap:10px; align-items:center; }
+  .contact-links a.mail { color:#F6ECD4; font:700 19px 'Amiri',serif; text-decoration:none; border-bottom:2px solid #E0B44A; padding-bottom:3px; }
+  .contact-links a.li { color:#CFEDE9; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; text-decoration:none; word-break:break-all; }
+  .contact-links .where { font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:#9FD6D1; margin-top:6px;
+    max-width:340px; line-height:1.7; }
+  .contact-links .where a { color:#F3D98B; }
+
+  @media (max-width:860px) {
+    /* no room for him to stand next to a stacked footer — drop the gag, drop the floor */
+    .usher { display:none; }
+    .contact { padding-bottom:36px; }
+    .crafts { grid-template-columns:repeat(2,1fr); }
+    .section, .hero, .carpet, .contact { padding-left:22px; padding-right:22px; }
+    .hero-row { gap:30px; }
+  }
+  @media (max-width:600px) {
+    .page { padding:12px 8px 24px; }
+    .frame { padding:6px; }
+    .topbar { justify-content:center; text-align:center; font-size:11px; }
+    .section, .hero, .carpet, .contact { padding-left:16px; padding-right:16px; }
+    .crafts { grid-template-columns:1fr; }
+    .craft { border-radius:60px 60px 4px 4px; }
+    .chapter { grid-template-columns:1fr; }
+    .chapter-num { flex-direction:row; gap:12px; padding:10px; }
+    .chapter-num span br { display:none; }
+    .prologue .chapter-num { border-right:none; border-bottom:1px dashed #C9A96B; }
+    .chapter-body { padding:18px; }
+    .chapter-body h2 { font-size:22px; }
+    .hm-days { display:none; }
+    .hm-foot { font-size:10.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+ <div class="frame">
+  <div class="sheet">
+
+   <div class="strip" style="border-bottom:1px solid #B8892C"></div>
+
+   <div class="topbar">
+     <div>д. шабельник</div>
+     <nav>
+       <a href="#chapters">работа</a>
+       <a href="#carpet">пруф</a>
+       <a href="#niches">стек</a>
+       <a href="https://linkedin.com/in/dmitrijs-sabelniks">linkedin ↗</a>
+       <a href="/" class="lang" hreflang="en" lang="en">english</a>
+     </nav>
+     <div>рига / тилбург</div>
+   </div>
+
+   <div class="hero">
+    <div class="hero-row">
+      <div class="hero-copy">
+        <h1>Я делаю системы, на которых бизнес реально работает…<br><span>+ ИИ</span></h1>
+        <div class="rule"><i></i><b>◆◆◆</b></div>
+        <p class="lede">Дмитрий Шабельник — инженер машинного обучения, forward deployed. Внедряю ИИ в живые клиентские среды и остаюсь разбираться с последствиями. LLM-пайплайны, кредитный риск, обработка документов.</p>
+        <p class="lede meta">рига / тилбург · работаю везде, где есть терминал</p>
+      </div>
+
+      <div class="lamp">
+        <div class="lamp-outer">
+          <div class="lamp-inner">
+            <div class="lamp-stage">
+              <video id="genie" role="img" src="assets/turntable.mp4" poster="assets/turntable-poster.webp"
+                muted playsinline preload="auto" disablepictureinpicture
+                aria-label="Дмитрий Шабельник, поворачивается при прокрутке страницы"></video>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Дмитрий Шабельник<small>крути страницу — он повернётся</small></div>
+      </div>
+    </div>
+   </div>
+
+   <div class="divider"></div>
+
+   <div class="section" id="chapters" style="padding-bottom:12px">
+    <div class="part">Работа</div>
+
+    <div class="chapter">
+      <div class="chapter-num" style="background:#7A1F22"><em>I</em><span>2026<br>—<br>сейчас</span></div>
+      <div class="chapter-body">
+        <h2>Forward deployed инженер, <a href="https://nuoxera.com">Nuoxera</a> — первый</h2>
+        <p>Работаю внутри клиентских команд: выясняю задачу бизнеса и довожу до продакшена системы на ИИ — API, конвейеры данных, интерфейсы. На мне архитектура, интеграция LLM и всё, что ломается в два часа ночи после деплоя.</p>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-num" style="background:#1E6F6A"><em>II</em><span>2025<br>—<br>2026</span></div>
+      <div class="chapter-body">
+        <h2>Парсер перестрахования переписан; модели риска на трёх рынках</h2>
+        <p>Переписал монолитный LLM-парсер договоров перестрахования в модульный DSPy-пайплайн — оптимизация промптов по метрикам, а не по настроению, с трекингом экспериментов. Построил и мониторил модели кредитного риска и фрода в Мексике, Чехии и Испании: признаки IV/WoE, дрейф PSI, винтажный анализ. Процессы n8n + MongoDB, сводящие ответы нескольких LLM в проверенные данные договора.</p>
+      </div>
+    </div>
+
+    <div class="chapter">
+      <div class="chapter-num" style="background:#B8892C;color:#3A1210"><em>III</em><span>2024<br>—<br>2025</span></div>
+      <div class="chapter-body">
+        <h2>Кредитный скоринг для мультирыночного кредитора</h2>
+        <p>Моделирование кредитного риска и выявление мошенничества для кредитной платформы на нескольких рынках; разработка скоркарт с анализом IV/WoE, оптимизация ETL, качество данных.</p>
+      </div>
+    </div>
+
+    <div class="chapter prologue">
+      <div class="chapter-num"><em>IV</em><span>2018<br>—<br>2022</span></div>
+      <div class="chapter-body">
+        <h2>Ранее: облачные и дата-роли</h2>
+        <p>Инфраструктура AWS в голландской страховой, качество данных для обучения навигационных моделей, валидация промышленных данных. Бакалавр Data Science, Технический университет Эйндховена.</p>
+      </div>
+    </div>
+
+   </div>
+
+   <div class="carpet" id="carpet">
+     <div class="part" style="color:#F3D98B;margin-bottom:8px">Пруф</div>
+     <div class="carpet-weave">
+      <div class="carpet-card">
+       <div class="hm">
+         <div class="hm-days">
+           <div></div><div>ПН</div><div></div><div>СР</div><div></div><div>ПТ</div><div></div>
+         </div>
+         <div class="hm-grid">
+           <div class="hm-months">
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em">МАР</div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em">АПР</div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em">МАЙ</div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em">ИЮН</div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em"></div>
+<div style="flex:1;font-size:9px;color:#A9895A;height:12px;white-space:nowrap;letter-spacing:.1em">ИЮЛ</div>
+           </div>
+           <div class="hm-weeks">
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-01 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-02 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-03 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-04 · 3 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-05 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-06 · 4 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-07 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-08 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-09 · 6 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-10 · 13 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-11 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-12 · 13 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-13 · 7 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-14 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-15 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-16 · 12 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-17 · 10 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-18 · 2 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-19 · 12 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-20 · 9 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-21 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-22 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-23 · 1 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-24 · 12 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-03-25 · 28 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-26 · 8 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-27 · 19 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-03-28 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-03-29 · 1 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-30 · 10 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-03-31 · 15 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-04-01 · 31 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-02 · 13 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-03 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-04 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-05 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-06 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-07 · 11 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-08 · 10 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-09 · 24 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-10 · 16 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-11 · 2 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-12 · 5 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-13 · 2 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-14 · 3 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-04-15 · 48 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-16 · 15 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-17 · 21 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-18 · 1 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-19 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-20 · 12 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-21 · 23 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-22 · 19 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-04-23 · 50 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-24 · 8 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-25 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-04-26 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-27 · 15 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-04-28 · 30 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-04-29 · 9 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-04-30 · 21 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-01 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-02 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-03 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-04 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-05 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-06 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-05-07 · 20 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-05-08 · 6 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-09 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-10 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-05-11 · 23 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-05-12 · 54 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-05-13 · 50 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-14 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-05-15 · 30 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-16 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-17 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-05-18 · 64 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-05-19 · 32 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-05-20 · 102 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-05-21 · 4 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-05-22 · 21 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-05-23 · 2 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-24 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-05-25 · 16 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-05-26 · 32 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-05-27 · 44 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-05-28 · 43 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-05-29 · 32 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-30 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-05-31 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-01 · 39 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-06-02 · 54 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-03 · 18 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-04 · 30 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-05 · 16 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-06 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-07 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-08 · 31 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-09 · 30 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-06-10 · 70 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-06-11 · 52 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-06-12 · 58 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-13 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-14 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-15 · 12 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-16 · 16 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-17 · 47 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-18 · 37 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-19 · 32 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-06-20 · 1 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-21 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-22 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-23 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-24 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-25 · 17 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-26 · 19 commits"></div>
+<div style="width:100%;height:12px;background:#E2C58E" title="2026-06-27 · 1 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-06-28 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-06-29 · 26 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-06-30 · 20 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-07-01 · 19 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-07-02 · 76 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-07-03 · 38 commits"></div>
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-07-04 · 0 commits"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;flex:1">
+<div style="width:100%;height:12px;background:#EFE3C4" title="2026-07-05 · 0 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-07-06 · 23 commits"></div>
+<div style="width:100%;height:12px;background:#7A1F22" title="2026-07-07 · 143 commits"></div>
+<div style="width:100%;height:12px;background:#A8452C" title="2026-07-08 · 39 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-07-09 · 13 commits"></div>
+<div style="width:100%;height:12px;background:#C9922F" title="2026-07-10 · 16 commits"></div>
+<div style="width:100%;height:12px;background:transparent"></div>
+</div>
+           </div>
+         </div>
+       </div>
+       <div class="hm-foot">
+         <div><b style="color:#7A1F22">2 142</b> коммита · одна клетка = один день · март 2026 — сейчас</div>
+         <div>нда закрывает имя, но не график</div>
+       </div>
+      </div>
+     </div>
+   </div>
+
+   <div class="section" id="niches" style="padding-bottom:40px">
+     <div class="part" style="margin-bottom:10px">Стек</div>
+     <div class="tagline">инструменты скучные. то, что они доставляют — нет.</div>
+     <div class="crafts">
+       <div class="craft">
+         <h3 style="background:#7A1F22">LLM &amp; AI</h3>
+         <p>llm-пайплайны<br>оптимизация dspy<br>rag<br>контекст-инжиниринг<br>агентное кодирование</p>
+       </div>
+       <div class="craft">
+         <h3 style="background:#1E6F6A">ML И РИСК</h3>
+         <p>кредитный скоринг<br>антифрод<br>iv/woe · psi<br>винтажный анализ<br>pytorch · sklearn · mlflow</p>
+       </div>
+       <div class="craft">
+         <h3 style="background:#B8892C;color:#3A1210">БЭКЕНД</h3>
+         <p>fastapi · celery/redis<br>docker · aws<br>n8n<br>mongodb · postgresql<br>ci/cd · linux</p>
+       </div>
+       <div class="craft">
+         <h3 style="background:#8C2F22">ЯЗЫКИ</h3>
+         <p>python · typescript<br>sql · r · bash<br>—<br>английский · русский<br>латышский</p>
+       </div>
+     </div>
+   </div>
+
+   <div class="contact">
+          <h2>Всё будет задеплоено.</h2>
+     <div class="rule"><i></i><b>◆</b><i></i></div>
+     <div class="contact-links">
+       <a class="mail" href="mailto:dmitryschab@gmail.com">dmitryschab@gmail.com</a>
+       <a class="li" href="https://linkedin.com/in/dmitrijs-sabelniks">linkedin.com/in/dmitrijs-sabelniks</a>
+       <div class="where">первый forward deployed инженер в <a href="https://nuoxera.com">nuoxera.com</a> · рига / тилбург</div>
+     </div>
+     <img class="usher" alt="" aria-hidden="true" width="453" height="420" data-src="assets/usher-v1.webp">
+   </div>
+
+   <div class="strip" style="border-top:1px solid #B8892C"></div>
+
+  </div>
+ </div>
+</div>
+
+<script>
+// Scroll turns him: the turntable clip is scrubbed by scroll position, one
+// full revolution over the first screen — the lamp has left the viewport by then,
+// so the whole turn happens while he is actually visible. The clip is encoded
+// all-intra so seeking lands on an exact frame instead of the nearest keyframe.
+(function () {
+  var vid = document.getElementById('genie');
+  if (!vid || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // A seek already in flight swallows later ones, so rather than chase seek
+  // events, converge on the scroll position from a frame loop — it self-corrects
+  // whatever the decoder dropped. Only runs while the lamp is on screen.
+  var running = false;
+  function tick() {
+    if (!running) return;
+    if (vid.duration) {
+      var t = Math.min(Math.max(scrollY / innerHeight, 0), 1);
+      var want = t * (vid.duration - 0.01);
+      if (Math.abs(want - vid.currentTime) > 0.02) vid.currentTime = want;
+    }
+    requestAnimationFrame(tick);
+  }
+  new IntersectionObserver(function (entries) {
+    var visible = entries[0].isIntersecting;
+    if (visible && !running) { running = true; tick(); } else { running = visible; }
+  }).observe(vid);
+})();
+
+// Reach the bottom and he walks out from the left to point at the linkedin link.
+// The clip is only fetched once you get there — it costs nothing above the fold.
+(function () {
+  var usher = document.querySelector('.usher');
+  if (!usher || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  new IntersectionObserver(function (entries, obs) {
+    if (!entries[0].isIntersecting) return;
+    // hidden by the narrow-screen media query — don't spend the download on it
+    if (getComputedStyle(usher).display === 'none') return;
+    obs.disconnect();
+    usher.src = usher.dataset.src;   // animated webp, loop=1 — ends holding the point
+    usher.classList.add('on');
+    // 50 frames at 83ms before the held final frame — light the link as the arm lands
+    setTimeout(function () {
+      var li = document.querySelector('.contact-links a.li');
+      if (li) li.classList.add('lit');
+    }, 50 * 83);
+  }, { threshold: 0.45 }).observe(usher.closest('.contact'));
+})();
+</script>
+
+</body>
+</html>

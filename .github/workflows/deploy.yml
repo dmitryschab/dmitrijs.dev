@@ -13,11 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Only index.html is the site. Keep the CSVs / ruvector.db / other HTML out of prod.
+      # index.html (en) + ru.html + assets/ are the site. Keep the CSVs / ruvector.db / other HTML out of prod.
       - name: Stage site
         run: |
           mkdir -p dist
-          cp index.html dist/
+          cp index.html ru.html dist/
+          cp -R assets dist/
 
       - name: Deploy to Cloudflare Pages
         env:
