@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Дмитрий Шабельник</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237A1F22'/%3E%3Cpath d='M16 4 28 16 16 28 4 16Z' fill='%23E0B44A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#521315; font-family:'PT Sans',sans-serif;
+    display:flex; align-items:center; justify-content:center; min-height:100vh; padding:26px 18px; }
+  ::selection { background:#E0B44A; color:#3A1210; }
+
+  .frame { width:100%; max-width:860px; border:2px solid #E0B44A; background:#7A1F22; padding:9px;
+    box-shadow:0 22px 70px rgba(0,0,0,.5); }
+  .sheet { background:#F6ECD4; color:#3A1210; border:1px solid #B8892C; overflow:hidden; }
+  .strip { height:16px; background:repeating-conic-gradient(from 45deg at 50% 50%,#E0B44A 0 25%,#1E6F6A 0 50%) 0 0/16px 16px; }
+
+  /* the traveller is out in the dunes with the city a speck on the horizon —
+     the picture carries the joke, so the copy stays short */
+  .scene { display:block; width:100%; height:auto; border-bottom:1px solid #B8892C; }
+  .body { padding:34px 40px 40px; text-align:center; }
+  h1 { margin:0; font:700 clamp(52px,11vw,88px)/1 'Amiri',Georgia,serif; color:#7A1F22; letter-spacing:.04em; }
+  .rule { display:flex; align-items:center; justify-content:center; gap:12px; margin:18px 0 20px; }
+  .rule i { height:1px; width:70px; background:rgba(184,137,44,.6); }
+  .rule b { color:#B8892C; font-size:13px; letter-spacing:.5em; font-weight:400; }
+  p { margin:0 0 8px; font:400 16px/1.75 'PT Sans',sans-serif; color:#4A2A20; }
+  p.en { font-size:14px; color:#8A6B44; font-style:italic; }
+  .links { margin-top:26px; display:inline-flex; gap:26px; flex-wrap:wrap; justify-content:center; }
+  .links a { color:#7A1F22; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase;
+    text-decoration:none; border-bottom:2px solid #E0B44A; padding-bottom:3px; transition:color .3s ease; }
+  .links a:hover { color:#1E6F6A; }
+
+  @media (max-width:600px) {
+    body { padding:12px 8px; }
+    .frame { padding:6px; }
+    .body { padding:24px 20px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+ <div class="sheet">
+  <div class="strip" style="border-bottom:1px solid #B8892C"></div>
+  <img class="scene" src="assets/lost.webp" alt="Путник с лампой стоит один среди дюн; город виднеется далеко на горизонте" width="1400" height="781">
+  <div class="body">
+    <h1>404</h1>
+    <div class="rule"><i></i><b>◆</b><i></i></div>
+    <p>Здесь только дюны. Город вон там, на горизонте.</p>
+    <p class="en">Nothing here but dunes. The city is over there, on the horizon.</p>
+    <div class="links">
+      <a href="/ru.html">к каравану</a>
+      <a href="/" hreflang="en" lang="en">english</a>
+    </div>
+  </div>
+  <div class="strip" style="border-top:1px solid #B8892C"></div>
+ </div>
+</div>
+
+</body>
+</html>

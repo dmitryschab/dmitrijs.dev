@@ -13,11 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # index.html (en) + ru.html + assets/ are the site. Keep the CSVs / ruvector.db / other HTML out of prod.
+      # index.html (en) + ru.html + 404.html + assets/ are the site. Keep the CSVs / ruvector.db / other HTML out of prod.
+      # Pages serves 404.html itself for unmatched paths, so it has to be staged like any other page.
       - name: Stage site
         run: |
           mkdir -p dist
-          cp index.html ru.html dist/
+          cp index.html ru.html 404.html dist/
           cp -R assets dist/
 
       - name: Deploy to Cloudflare Pages
