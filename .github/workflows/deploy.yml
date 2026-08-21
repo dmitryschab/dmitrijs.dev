@@ -20,6 +20,7 @@ jobs:
           mkdir -p dist
           cp index.html ru.html 404.html dist/
           cp -R assets dist/
+          cp -R functions dist/   # Pages Functions: /api/hits, the visitor counter
 
       - name: Deploy to Cloudflare Pages
         env:
